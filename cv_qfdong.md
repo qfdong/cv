@@ -1,19 +1,24 @@
-##### 联系方式 
+
+##### 个人信息  <img src='./pic.jpg' style='float:right; width:100px;height:140 px'/>
+
+* 董启凡/男/1990.08.17
 * 手机： 18616265727
 * Email: dongqifan1990@gmail.com
 * 微信：dongqifanyy
+* 领英：https://www.linkedin.com/in/qifan-dong-152764100/
 
-##### 个人信息
-==董启凡==/男/1990.08.17
 #####教育经历
-2009.09-2013.06 ==本科==	 山东大学信息科学与工程学院 
-2013.09-2016.06 ==研究生==	山东大学信息科学与工程学院
-#####文章作品
-#####工作经历
-**酷芯微电子有限公司  	(2016.06-至今,机器视觉与算法工程师)**
+2009.09-2013.06 本科 山东大学信息科学与工程学院 工学硕士(推免)
+2013.09-2016.06 研究生	山东大学信息科学与工程学院  工学学士
 
-##### 1. CNN算法的嵌入式移植与优化项目
-###### 1.1 CEVA的Generator的实现
+
+#####工作与项目经历
+
+###==酷芯微电子有限公司  	(2016.06-至今,机器视觉与算法工程师) ==
+
+
+##### ++1. CNN算法的嵌入式移植与优化项目 （2016.12 - 2018.04）++
+###### * ++ CEVA的Generator的实现++ *
   通过研究CEVA的指令集，思考了在DSP端实现CNN的方法，确定了加密的Generator端的权重量化方法，重排序方法，并完成了代码实现，产生的文件与CEVA提供的Generator产生的文件一致，主要包括以下几点：
 - 权重系数的重排
     卷积的不同kernel的计算可以并行，受限于CEVA的指令集，需要在进行卷积计算之前，将4个kernel的系数重排使得内存地址连续，提高了内存访问效率
@@ -22,7 +27,7 @@
 - caffe框架的修改
     generator调用caffelib来解析权重文件并进行forward操作，同时需要保存中间的运算结果以及权重系数来进行量化与重排序操作，并基于该lib完成了各个层参数的保存，最终通过Generator会生成两个二进制文件。
         
-###### 1.2 CEVA的CDNN算法的DSP端实现
+###### * ++ CEVA的CDNN算法的DSP端实现++ *
 - CNN算法各个Layer的功能实现
     * convolution layer(包括group,depth wise wise)
     * batchnorm layer(与convolution layer,bias,scale,activation合并计算)
@@ -61,7 +66,7 @@
 - CEVA编译器的bug的定位
 编写的CNN程序软件仿真结果正确，而硬件仿真结果错误。在硬件平台仿真加debug信息或者加trigger信息的时候反而结果会正确。开-o4优化选项结果错误而-o0优化选项结果正确。最终经过debug是因为在Toolbox V16的版本上编译vsspmac的指令与vmax指令时中间会少插一个nop，导致在寄存器的值尚未被写回的时候就被读取。通过dump波形，查看-o4优化选项的汇编代码并人肉定位到源代码的位置，最终确定了问题。
 
-##### 2. 扫地机项目的支持 （2017.12 - 2018.03）
+##### ++2. 扫地机项目的支持 （2017.12 - 2018.03）++
 负责扫地机项目的识别算法的训练（前期）与嵌入式移植：
 - 算法训练：
     * 搭建了darknet的评估flow。例如map计算，loss曲线绘制
@@ -75,7 +80,7 @@
     * 将最新训练好的权重，最快部署到芯片，用于demo
     * 自动化浮点与定点评估工具
 
-##### 3. 下一代芯片的demo （2018.03 - 2018.04）
+##### ++3. 下一代芯片的demo （2018.03 - 2018.04）++
 在软件SDK尚未ready的情况下，负责调度了Sensor、ISP、ARM、CEVA、DISPALY等相关人员，完成了tiny-yolo算法在裸版上的demo，能够从摄像头采集图像并最终将识别的结果显示在VGA接口的显示器上.该部分主要工作有：
 
 - Baremetal CEVA多核的程序编写以及调试
@@ -83,7 +88,7 @@
 - ARM与CEVA多核通信
 - Demo程序的编写以及调试
 
-##### 4. Miscellaneous
+##### ++4. Miscellaneous++
 - 协助DLA硬件组熟悉CNN算法并协同制定spec
 - CEVA-XM4 dsp的培训文档、实验例程与移植guideline整理
 - 协助ISP组移植畸变矫正、双目立体视觉匹配算法到CEVA
@@ -91,12 +96,22 @@
 - Clang\++编译器的研究，直接编译C/C++ codes并与ARM性能比较
 - SLAM Eigen库的研究与优化方法探索，协助移植到CEVA
 - Vision服务器的搭建
+- darknet2caffe脚本
 
-___
+#####技能清单
+- 语言水平：CET6
+- 编程语言：C/C++,Python,Shell,Halide,verilog
+- 效率工具：GNU Make,CMake,QMake,Markdown,Git
+- 开发环境：Visual Studio,Eclipse,PyCharm,Qt Creator,ModelSim,Cl,gcc/g\++,clang++,LLVM,GDB
+- 计算机视觉：OpenCV,Dlib,Caffe,Tensorflow,Pytorch
 
-####技能清单
-___
-####演讲与讲义
-___
-####致谢
-___
+#####荣誉与证书
+- 2017.12		酷芯微电子优秀新人奖
+- 2012.10   	山东大学优秀学生奖学金
+- 2011.10		山东大学优秀学生奖学金、山东大学潍柴动力奖学金
+
+#####文章作品
+- Fall Alarm and Inactivity Detection System Design and Implementation on Raspberry Pi
+International Conference on Advanced Communication Technology, ***Advanced Communication Technology (ICACT)***, *2015 17th International Conference on*
+- Sliced integral histogram: an efficient histogram computing algorithm and its FPGA implementation, ***Multimedia Tools and Applications***,*June 2017, Volume 76, Issue 12, pp 14327–14344*
+
