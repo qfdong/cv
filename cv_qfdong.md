@@ -4,26 +4,26 @@
 * 手机： 18616265727
 * Email: dongqifan1990@gmail.com
 * 微信：dongqifanyy
-* 领英：https://www.linkedin.com/in/qifan-dong-152764100/
 
 ####教育经历
-2009.09-2013.06 本科   山东大学信息科学与工程学院    工学硕士(推免)
-2013.09-2016.06 研究生	山东大学信息科学与工程学院  工学学士
+2009.09-2013.06 　　本科   　　　山东大学信息科学与工程学院    　　　工学硕士(推免)
+2013.09-2016.06 　　研究生	　　山东大学信息科学与工程学院  　　　工学学士
 
 ####工作经历
 
-- 2016.06-至今 酷芯微电子有限公司  	(机器视觉与算法工程师) 
+2016.06-至今 酷芯微电子有限公司  	(机器视觉与算法工程师) 
 
 #### 项目经历
 ##### ++1. CNN算法的嵌入式移植与优化项目 （2016.12 - 2018.04）++
+该项目完成了将浮点caffe网络自动移植到DSP上的工作,支持AlexNet,GoogleNet,ResNet,MobieNet,Yolo等主流网络.主要包括两大部分:
  * *1.1  CEVA的Generator的实现*
-  通过研究CEVA的指令集，思考了在DSP端实现CNN的方法，确定了加密的Generator端的权重量化方法，重排序方法，并完成了代码实现，产生的文件与CEVA提供的Generator产生的文件一致，主要包括以下几点：
+  通过研究CEVA的指令集，搞懂了在DSP端实现CNN的方法以及了加密的Generator端的权重量化方法，重排序方法，并完成了代码实现，产生的文件与CEVA提供的Generator产生的文件一致，主要包括以下几点：
 - 权重系数的重排
     卷积的不同kernel的计算可以并行，受限于CEVA的指令集，需要在进行卷积计算之前，将4个kernel的系数重排使得内存地址连续，提高了内存访问效率
 - 权重系数的量化
     深入研究了权重量化的相关文章，最终基于文章Ristretto的dynamic fixed point方法，实现了generator端的权重系数的量化。包括16bit与8bit权重
 - caffe框架的修改
-    generator调用caffelib来解析权重文件并进行forward操作，同时需要保存中间的运算结果以及权重系数来进行量化与重排序操作，并基于该lib完成了各个层参数的保存，最终通过Generator会生成两个二进制文件。
+    generator调用caffelib来解析权重文件并进行forward操作，同时需要保存中间的运算结果以及权重系数来进行量化与重排序操作，并基于该lib完成了各个层参数的保存，最终通过Generator会生成两个二进制文件供给DSP端计算。
         
  * *1.2 CEVA的CDNN算法的DSP端实现*
     - CNN算法各个Layer的功能实现
@@ -35,7 +35,7 @@
         - RegionLayer(YOLO),其中使用了expf的快速计算方法,在此基础上完成定点化、向量化
 
     - Layer计算的速度优化
-        - 针对128KB DTCM的片上内存的速度优化，最终相对于512KB DTCM仅有低于5%的额外耗时
+        - 针对128KB DTCM的片上内存的速度优化(**最终相对于512KB DTCM仅有低于5%的额外耗时**)
             - 新的Tile划分方式（channel方向划分）
             - 新的调度方式（充分复用小的DTCM）
             - 新的DMA搬运方式，减少CPU负载，提升DMA带宽利用率，减少了queue memory的尺寸
@@ -55,7 +55,7 @@
         硬件仿真的时候，经常DMA搬运挂掉，经过dump对应位置的波形并分析，定位到是不同memory读写latancy不一致引起的dma搬运的错乱。CPU在写descriptor的时候，会去更新queue_base_ptr的wptr指针并把descriptor写到memory。如果queue_base_ptr位于DTCM而queue位于DDR,会导致wptr++的时候descriptor还没写入DDR.导致queue拿到错误的descriptor。DMA搬运异常
 
     - 硬件仿真profile确定优化瓶颈
-        将运行cnn整个过程的VPU,LSU,DMA等valid信号dump出来,找到VPU利用率低的位置，查看PC值并根据PC值查看-o4反汇编代码确定源代码运行的位置，分析VPU利用率低的原因并进行修改，进一步提升速度，主要修改有：
+        在veloce仿真平台将运行cnn整个过程的VPU,LSU,DMA等valid信号dump出来,找到VPU利用率低的位置，查看PC值并根据PC值查看-o4反汇编代码确定源代码运行的位置，分析VPU利用率低的原因并进行修改，进一步提升速度，主要修改有：
         * 由于ping-pong buffer，在VPU密集计算的时候仍有代码去访问了DDR，导致CPU wait住。例如const data。
         * 将dma_queue_base_ptr放在片外，push_desc_in_queue会去访问ddr，导致cpu wait住。
         * matrix计算函数指针放在了DDR,每次tile循环去访问DDR.
@@ -79,7 +79,7 @@
     * 自动化浮点与定点评估工具
 
 ##### ++3. 下一代芯片的demo （2018.03 - 2018.04）++
-在软件SDK尚未ready的情况下，负责调度了Sensor、ISP、ARM、CEVA、DISPALY等相关人员，完成了tiny-yolo算法在裸版上的demo，能够从摄像头采集图像并最终将识别的结果显示在VGA接口的显示器上.该部分主要工作有：
+在软件SDK尚未ready的情况下，完成了tiny-yolo算法在裸版上的demo，能够从摄像头采集图像并最终将识别的结果显示在VGA接口的显示器上.该部分主要工作有：
 
 - Baremetal CEVA多核的程序编写以及调试
 - 芯片多核worst case的编写以及多核功耗测量
@@ -94,22 +94,23 @@
 - Clang\++编译器的研究，直接编译C/C++ codes并与ARM性能比较
 - SLAM Eigen库的研究与优化方法探索，协助移植到CEVA
 - Vision服务器的搭建
-- darknet2caffe脚本
+- darknet2caffe转换
 
 ####技能清单
 - 语言水平：CET6
-- 编程语言：C/C++,Python,Shell,Halide,verilog
+- 编程语言：C/C++,Python,Shell,Halide,Verilog
 - 效率工具：GNU Make,CMake,QMake,Markdown,Git
-- 开发环境：Visual Studio,Eclipse,PyCharm,Qt Creator,ModelSim,Cl,gcc/g\++,clang++,LLVM,GDB
+- 开发环境：Visual Studio,Eclipse,PyCharm,Qt Creator,ModelSim,Cl,Gcc/G\++,Clang++,LLVM,Gdb
 - 计算机视觉：OpenCV,Dlib,Caffe,Tensorflow,Pytorch
+- 深度学习网络:AlexNet,GoogleNet,ResNet,SqueezeNet,MobileNet,ShuffleNet,Faster-RCNN,YOLO,SSD,MTCNN,FCN
 
 ####荣誉与证书
-- 2017.12		上海市酷芯微电子公司优秀新人奖
-- 2016.05		山东大学2016届优秀毕业生
-- 2015.12		山东大学2015年度优秀研究生
-- 2015.12		山东大学2015年度光华奖学金
-- 2012.10   	山东大学优秀学生奖学金
-- 2011.10		山东大学优秀学生奖学金、山东大学潍柴动力奖学金
+- 2017.12　　　　上海市酷芯微电子公司优秀新人奖
+- 2016.05　　　　山东大学2016届优秀毕业生
+- 2015.12　　　　山东大学2015年度优秀研究生
+- 2015.12　　　　山东大学2015年度光华奖学金
+- 2012.10　　　　山东大学优秀学生奖学金
+- 2011.10　　　　山东大学优秀学生奖学金、山东大学潍柴动力奖学金
 
 ####文章作品
 - Fall Alarm and Inactivity Detection System Design and Implementation on Raspberry Pi
